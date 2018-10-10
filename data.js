@@ -431,7 +431,7 @@ function getData() {
            correct: "TableLayout"
         },
         {
-           question: "An activity that used overridePendingTransition() in its onStart() method to load a <translate> animation with fromXDelta=\"0\" and toXDelta=\"-100%\" would move the activity's layout to the right and completely off the screen when it transitions to another activity.",
+           question: "An activity that used overridePendingTransition() in its onStart() method to load a &lt;translate&gt; animation with fromXDelta=\"0\" and toXDelta=\"-100%\" would move the activity's layout to the right and completely off the screen when it transitions to another activity.",
            options: ["True", "False"],
            correct: "False"
         },
@@ -476,7 +476,7 @@ function getData() {
            correct: "False"
         },
         {
-           question: "All animations in a <set> are always played together at the same time.",
+           question: "All animations in a &lt;set&gt; are always played together at the same time.",
            options: ["True", "False"],
            correct: "False"
         },
@@ -631,7 +631,7 @@ function getData() {
            correct: "True"
         },
         {
-           question: "If an implicit Intent were used to start an activity using Intent.ACTION_SEND, any activity with a matching ACTION_SEND <intent-filter> could potentially be started.",
+           question: "If an implicit Intent were used to start an activity using Intent.ACTION_SEND, any activity with a matching ACTION_SEND &lt;intent-filter&gt; could potentially be started.",
            options: ["True", "False"],
            correct: "True"
         },
