@@ -98,6 +98,9 @@
             questionRange.value = 100;
         }
         else {
+            if (e.target.value < 10) {
+                e.target.value = 10;
+            }
             questionRange.value = (e.target.value / data.length) * 100;
         }
     });
