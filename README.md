@@ -6,4 +6,4 @@ This is a simple webpage for taking a practice quiz consisting of questions from
 2. Click *Generate Quiz*.
 2. Select your answer for each question.
 3. Click *Grade Quiz*.
-4. Review your results, correctly answered questions will have the questioned highlighted in green, while incorrect questions will be red. The correct answer will also be highlighted green.
+4. Review your results, correctly answered questions will have the questioned highlighted in green, while incorrectly answered questions will be highlighted red. The correct answer will also be highlighted green, while an incorrect answer will be highlighted red.
