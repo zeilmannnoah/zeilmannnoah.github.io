@@ -29,6 +29,12 @@
             background-color: #0062cc !important;
             border-color: #025dc4 !important;
         }
+
+        #time {
+            position: fixed;
+            right: 30px;
+            top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -49,17 +55,18 @@
                     <input id="question-range" class="form-control" type="range" value="100">
                 </div>
             </div>
-            <div class="row" style="margin-top: 5px;">
+            <div class="row">
                 <button id="question-submit" type="button" class="btn btn-primary mx-auto my-3">Generate Quiz</button>
             </div>
         </div>
         <div id="quiz" class="d-none">
+            <h3 id="time" class="float-right">Time: 0:00</h3>
             <div class="row">
                 <form id="quiz-form">
                     
                 </form>
             </div>
-            <div class="row" style="margin-top: 5px;">
+            <div class="row">
                 <button id="quiz-submit" type="button" class="btn btn-primary mx-auto mb-3">Grade Quiz</button>
                 <button id="quiz-reset" type="button" class="btn btn-danger mx-auto my-3 d-none">Reset Quiz</button>
             </div>
@@ -69,15 +76,17 @@
 <script src="./data.js"></script>
 <script>
     var data = getData(),
-    questionField = document.getElementById("question-field"),
-    questionRange = document.getElementById("question-range"),
-    questionSubmit = document.getElementById("question-submit"),
-    quizSubmit = document.getElementById("quiz-submit"),
-    quizSetup = document.getElementById("quiz-setup"),
-    quizForm = document.getElementById("quiz-form"),
-    quizReset = document.getElementById("quiz-reset"),
-    quiz = document.getElementById("quiz"),
-    results = document.getElementById("results");
+        questionField = document.getElementById("question-field"),
+        questionRange = document.getElementById("question-range"),
+        questionSubmit = document.getElementById("question-submit"),
+        quizSubmit = document.getElementById("quiz-submit"),
+        quizSetup = document.getElementById("quiz-setup"),
+        quizForm = document.getElementById("quiz-form"),
+        quizReset = document.getElementById("quiz-reset"),
+        quiz = document.getElementById("quiz"),
+        results = document.getElementById("results"),
+        time = document.getElementById("time"),
+        timer;
 
     questionField.max = data.length;
     questionField.value = data.length;
@@ -105,6 +114,7 @@
             data[i].id = i;
             quizForm.appendChild(createQuestionNode(data[i]));
         }
+        startTimer();
     });
 
     quizSubmit.addEventListener("click", function() {
@@ -113,11 +123,15 @@
             questionGroup = [],
             correct = 0;
 
-        Array.from(quizForm.elements).forEach(function(input, idx) {
-            var regEx = /Q(\d+)/g,
-                match = regEx.exec(input.id)[1],
-                answer;
+        clearInterval(timer);
+        time.classList.add("d-none");
 
+        Array.from(quizForm.elements).forEach(function(input, idx) {
+            var answer,
+                match;
+
+            regEx = /Q(\d+)/g
+            match = regEx.exec(input.id)[1]
             input.parentNode.classList.add("disabled");
             input.disabled = true;
 
@@ -125,6 +139,14 @@
                 questionGroup.push(input);
 
                 if (idx === quizForm.elements.length -1) {
+                    var seconds,
+                        minutes;
+
+                    regEx = /\w+:\s(\d+):(\d\d)/g,
+                    match = regEx.exec(time.innerText),
+                    minutes = match[1],
+                    seconds = match[2];
+
                     answer = questionGroup.filter(function(option) { 
                         return option.value == data[qId].correct;
                     })[0];
@@ -144,7 +166,9 @@
                     quizReset.classList.remove("d-none");
                     results.classList.remove("d-none");
                     quizSubmit.classList.add("d-none");
-                    results.innerHTML = correct + " correct out of " + questionField.value + "<br/>" + Math.round((correct / questionField.value) * 10000) / 100 + "%";
+                    results.innerHTML = correct + " correct out of " + questionField.value + "<br/>" + 
+                        Math.round((correct / questionField.value) * 10000) / 100 + "%<br/>Completed in " + 
+                        minutes + " minutes and " + seconds + " seconds";
                     window.scrollTo(0,0);
                 }
             }
@@ -176,7 +200,9 @@
         while(quizForm.children.length !== 0) {
             quizForm.firstElementChild.remove();
         }
-
+        
+        time.innerText = "Time: 0:00";
+        time.classList.remove("d-none");
         quizSetup.classList.remove("d-none");
         quizSubmit.classList.remove("d-none");
         quiz.classList.add("d-none");
@@ -225,18 +251,31 @@
         return questionContainer;
     }
 
-    /**
- * Randomize array element order in-place.
- * Using Durstenfeld shuffle algorithm.
- */
-function shuffleArray(array) {
-    for (var i = array.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-    }
-}
+    function startTimer() {
+        timer = setInterval(function() {
+            var regEx = /\w+:\s(\d+):(\d\d)/g,
+                match = regEx.exec(time.innerText),
+                minutes = match[1],
+                seconds = match[2];
 
+            seconds++;
+
+            if (seconds >= 60) {
+                seconds = 0;
+                minutes++;
+            }
+
+            time.innerText = "Time: " + minutes + ":" + (seconds < 10 ? "0" + seconds : seconds);
+        }, 1000)
+    }
+
+    function shuffleArray(array) {
+        for (var i = array.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
+    }
 </script>
 </html>
