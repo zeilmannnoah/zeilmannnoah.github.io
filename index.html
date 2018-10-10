@@ -380,7 +380,7 @@
     questionSubmit.addEventListener("click", function() {
         quizSetup.classList.add("d-none");
         quiz.classList.remove("d-none");
-
+        shuffleArray(data);
         for(var i = 0; i <= questionField.value - 1; i++){
             data[i].id = i;
             quizForm.appendChild(createQuestionNode(data[i]));
@@ -504,6 +504,19 @@
 
         return questionContainer;
     }
+
+    /**
+ * Randomize array element order in-place.
+ * Using Durstenfeld shuffle algorithm.
+ */
+function shuffleArray(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+}
 
 </script>
 </html>
