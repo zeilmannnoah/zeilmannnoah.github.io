@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CIS 362 Midterm Practive</title>
+    <link rel="stylesheet" id="bootstrap" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <style>
+    
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CIS 362 Midterm Quiz</h1>
+        <h2 id="results" class="text-center d-none"></h2>
+        <div class="row">
+            <button id="quiz-reset" type="button" class="btn btn-danger mx-auto my-3 d-none">Reset quiz</button>
+        </div>
+        <div id="quiz-setup">
+            <div class="row">
+                <div class="col-sm-3 offset-3">
+                    <label class="float-right">How many questions?</label>
+                </div>
+                <div class="col-md-3">
+                    <input id="question-field" class="form-control" type="number" min="10">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 offset-sm-6" >
+                    <input id="question-range" class="form-control" type="range" value="100">
+                </div>
+            </div>
+            <div class="row" style="margin-top: 5px;">
+                <button id="question-submit" type="button" class="btn btn-primary mx-auto">Generate Quiz</button>
+            </div>
+        </div>
+        <div id="quiz" class="d-none">
+            <div class="row">
+                <form id="quiz-form">
+                    
+                </form>
+            </div>
+            <div class="row" style="margin-top: 5px;">
+                <button id="quiz-submit" type="button" class="btn btn-primary mx-auto">Grade quiz</button>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    /*
+        {
+           question: "",
+           options: [],
+           correct: ""
+        },
+    */
+    var data = [
+        {
+            question: "What character should be used to separate multiple values for an EditText's android:inputType?",
+            options: ["@", "comma", "#", "|"],
+            correct: "|"
+        },
+        {
+           question: "If a visual control had a property/value of android:paddingLeft=\"@dimen/activity_horizontal_margin\", you would expect the value to come from the dimens.xml resource file.",
+           options: ["True", "False"],
+           correct: "True"
+        },
+        {
+           question: "Lollipop works on devices with 64-bit ARM, Intel and MIPS processors.",
+           options: ["True", "False"],
+           correct: "True"
+        },
+        {
+           question: "All image file names must contain only lowercase letters.",
+           options: ["True", "False"],
+           correct: "True"
+        },
+        {
+           question: "Android screen designs can be categorized by",
+           options: ["screen size and density of the device", "the screen size of the device", "the screen shape of the device"],
+           correct: "screen size and density of the device"
+        },
+        {
+           question: "Using overridePendingTransition(), two custom-built transitions can be explicitly applied to the entering and exiting activities.",
+           options: ["True", "False"],
+           correct: "True"
+        },
+        {
+           question: "Kitkat is optimized to run with a minimum of 128MB of Ram.",
+           options: ["True", "False"],
+           correct: "False"
+        },
+        {
+           question: "A _____ is a specialized control that is optimized for displaying long lists of items.",
+           options: ["ListView", "Scroller", "MasterList", "all of these"],
+           correct: "ListView"
+        },
+        {
+           question: "The mechanism for delivering an Intent to an activity is sendActivity().",
+           options: ["True", "False"],
+           correct: "True"
+        },
+        {
+           question: "What type of file is used to specify the app's user interface components using XML?",
+           options: ["values file", "layout file", "activity file", "interface file"],
+           correct: "layout file"
+        },
+        {
+           question: "Developers can only sign an application in release mode.",
+           options: ["True", "False"],
+           correct: "False"
+        },
+        {
+           question: "When an Activity has been paused, due to a previous activity being resumed, the ___ callback method is called.",
+           options: ["onCreate()", "onResume()", "onPause()", "onStart()"],
+           correct: "onPause()"
+        },
+        {
+           question: "What Activity method is called once the activity has been created and becomes visible to the user?",
+           options: ["onStart()", "onRestart()", "onCreate()", "onResume()"],
+           correct: "onStart()"
+        },
+        {
+           question: "A Fragment is integrated into an Activity, but does not need an Activity to run.",
+           options: ["True", "False"],
+           correct: "False"
+        },
+        {
+           question: "In Android API level 14 and above, you can add an attribute to the AndroidManifest.xml file to split the Action Bar into a top and bottom action bar.",
+           options: ["True", "False"],
+           correct: "True"
+        },
+        {
+           question: "Which layout type would typically be used to arrange UI elements vertically side-by-side?",
+           options: ["LinearLayout", "RelativeLayout", "GridLayout", "TableLayout"],
+           correct: "LinearLayout"
+        },
+        {
+           question: "Developers typically construct a single XML layout file for each Activity class in an app.",
+           options: ["True", "False"],
+           correct: "True"
+        },
+        {
+           question: "The activity's onDestroy() method is a good place to stop actions that consume a noticeable amount of CPU in order to make the switch to the next activity as fast as possible.",
+           options: ["True", "False"],
+           correct: "False"
+        },
+        {
+           question: "A Service can be used to handle network transactions.",
+           options: ["True", "False"],
+           correct: "True"
+        },
+        {
+           question: "Animation resource files are defined using XML code.",
+           options: ["True", "False"],
+           correct: "True"
+        },
+        {
+           question: "Android discourages the separation of functionality and resources.",
+           options: ["True", "False"],
+           correct: "False"
+        },
+        {
+           question: "The file _____ contains the unique identifiers for drawables, strings, layout elements and other resources.",
+           options: ["gradle", "AndroidManifest.xml", "R.java"],
+           correct: "R.java"
+        },
+        {
+           question: "The advantage of building applications that use Fragments is their ability to easily present a consistently well-designed user interface.",
+           options: ["True", "False"],
+           correct: "True"
+        },
+        {
+           question: "For the user to begin interacting with the application Activity, the ___ callback method is called.",
+           options: ["onResume()", "onCreate()", "onStart()", "onPause()"],
+           correct: "onResume()"
+        },
+        {
+           question: "Developers only need to provide a single image for each drawable resource since Android will automatically ensure the images look good on a variety of screen densities.",
+           options: ["True", "False"],
+           correct: "False"
+        },
+        {
+           question: "Fragments can be used without an activity.",
+           options: ["True", "False"],
+           correct: "False"
+        },
+        {
+           question: "An Android app's user interface can be created from Java code.",
+           options: ["True", "False"],
+           correct: "True"
+        },
+        {
+           question: "An activity that used overridePendingTransition() in its onStart() method to load a <translate> animation with fromXDelta=\"0\" and toXDelta=\"-100%\" would move the activity's layout to the right and completely off the screen when it transitions to another activity.",
+           options: ["True", "False"],
+           correct: "False"
+        },
+        {
+           question: "How are fragments typically used when implementing the master/detail flow interface design pattern on a tablet-sized Android device?",
+           options: ["Fragments are not typically used with the master/detail design pattern.", 
+            "Two activities each use two different fragments to display the master and detail screens.",
+            "A single activity uses the same fragment to display both the master and detail panels.",
+            "A single activity uses one fragment to display the master panel and one to display the detail panel." ],
+           correct: "A single activity uses one fragment to display the master panel and one to display the detail panel."
+        },
+        {
+           question: "The ____ callback is a good place to stop actions that consume a noticeable amount of CPU in order to make the switch to the next Activity as fast as possible.",
+           options: ["onPause()", "onResume()", "onStop()", "onStart()"],
+           correct: "onPause()"
+        },
+        {
+           question: "The final Android application is packaged into a(n)",
+           options: ["pkg file.", "apk file.", "apf file."],
+           correct: "apk file."
+        },
+        {
+           question: "String value resources are implemented as XML files.",
+           options: ["True", "False"],
+           correct: "True"
+        },
+        {
+           question: "What is the action overflow menu used for?",
+           options: ["Holding less frequently used actions.", 
+            "Holding actions that do not fit on the action bar and Holding less frequently used actions.",
+            "Holding buttons purely related to navigation.", 
+            "Holding actions that do not fit on the action bar."],
+           correct: "Holding actions that do not fit on the action bar and Holding less frequently used actions."
+        },
+        {
+           question: "The TextWatcher can be used with an EditText to determine when the user changes focus to or from the EditText control.",
+           options: ["True", "False"],
+           correct: "False"
+        },
+        {
+           question: "Java programs are compiled into ________ which are interpreted and executed by a Java virtual machine.",
+           options: ["JRE", "machine code", "bytecode", "Dalvik"],
+           correct: "bytecode"
+        },
+        {
+           question: "The Key Store creates a certificate with a private key and a password.",
+           options: ["True", "False"],
+           correct: "True"
+        },
+        {
+           question: "The main purpose of a GridLayout is to display tabular data when there is a significant amount of data for the user to navigate by scrolling.",
+           options: ["True", "False"],
+           correct: "True"
+        },
+        {
+           question: "The _____ is a development tool that can capture screenshots, record video, and provide state information of an application currently running.",
+           options: ["MDS", "ADT", "DDMS"],
+           correct: "DDMS"
+        },
+        {
+           question: "What EditText property can be used to produce a soft keyboard with a search icon?",
+           options: ["android:inputType", "android:searchIcon", "android:imeOptions", "android:gravity"],
+           correct: "android:imeOptions"
+        },
+        {
+           question: "The onStart() callback method is always called after onRestart().",
+           options: ["True", "False"],
+           correct: "True"
+        },
+        {
+           question: "All Android applications are composed of at least two Activity classes.",
+           options: ["True", "False"],
+           correct: "False"
+        },
+        {
+           question: "An Android app cannot be debugged if it is running on a physical device.",
+           options: ["True", "False"],
+           correct: "False"
+        },
+        {
+           question: "Dalvik is the default of Lollipop.",
+           options: ["True", "False"],
+           correct: "False"
+        },
+        {
+           question: "Designing an outstanding Android application involves considerable thought and analysis of usability and user interface design.",
+           options: ["True", "False"],
+           correct: "True"
+        },
+        {
+           question: "Which of these types of data is a Bundle not capable of storing?",
+           options: ["char", "Parcelable object", "byte", "All of these can be stored in a Bundle."],
+           correct: "All of these can be stored in a Bundle."
+        },
+        {
+           question: "You need to modify the R.java file when you need a new identifier for your controls.",
+           options: ["True", "False"],
+           correct: "False"
+        },
+        {
+           question: "What component represented the Model in the Tap Button Counter app?",
+           options: ["MainActivity class", "main_layout.xml", "TextView class", "Counter class"],
+           correct: "Counter class"
+        },
+        {
+           question: "The Fragment's onCreateView() method is typically used to restore the fragment's state.",
+           options: ["True", "False"],
+           correct: "False"
+        },
+        {
+           question: "Honeycomb was designed to support tablets.",
+           options: ["True", "False"],
+           correct: "True"
+        },
+        {
+           question: "An interpolator can be used in a transition animation in order to accelerate or decelerate a translation.",
+           options: ["True", "False"],
+           correct: "True"
+        },
+        {
+           question: "A fragment may only be used in one screen within an application.",
+           options: ["True", "False"],
+           correct: "False"
+        },
+        {
+           question: "What method is used to load and inflate an Activity's layout file?",
+           options: ["setContentView", "loadInterface", "onCreate", "loadLayoutFile"],
+           correct: "setContentView"
+        },
+        {
+           question: "When using Adaptive Design for designing the UI, the developer can create four different layout XML files to target four different general sizes of Android devices.",
+           options: ["True", "False"],
+           correct: "True"
+        },
+        {
+           question: "An activity can determine if it needs to show the master and detail panes on the same screen or launch a second activity that displays the detail alone by doing what?",
+           options: ["Checking the width and height of the device.", 
+            "Checking to see if the proper settings exist in AndroidManifest.xml.",
+            "Checking to see if the system is currently displaying a layout with two panes or a single pane.",
+            "Checking to see if the device supports fragments."],
+           correct: "Checking to see if the system is currently displaying a layout with two panes or a single pane."
+        },
+        {
+           question: "Android applications use C++.",
+           options: ["True", "False"],
+           correct: "False"
+        },
+        {
+           question: "The Action Bar can display drop-down menus.",
+           options: ["True", "False"],
+           correct: "True"
+        },
+        {
+           question: "What defines the characteristics of the device an application will be tested on using the Android Emulator?",
+           options: ["JDK", "Android SDK", "AVD", "Gradle"],
+           correct: "AVD"
+        },
+    ],
+    questionField = document.getElementById("question-field"),
+    questionRange = document.getElementById("question-range"),
+    questionSubmit = document.getElementById("question-submit"),
+    quizSubmit = document.getElementById("quiz-submit"),
+    quizSetup = document.getElementById("quiz-setup"),
+    quizForm = document.getElementById("quiz-form"),
+    quizReset = document.getElementById("quiz-reset"),
+    quiz = document.getElementById("quiz"),
+    results = document.getElementById("results");
+
+    questionField.max = data.length;
+    questionField.value = data.length;
+    questionRange.min =  (10 / data.length) * 100;
+
+    questionField.addEventListener("change", function(e) {
+        if (e.target.value > data.length) {
+            e.target.value = data.length;
+            questionRange.value = 100;
+        }
+        else {
+            questionRange.value = (e.target.value / data.length) * 100;
+        }
+    });
+
+    questionRange.addEventListener("input", function(e) {
+        questionField.value = Math.round(data.length * (e.target.value * 0.01));
+    });
+
+    questionSubmit.addEventListener("click", function() {
+        quizSetup.classList.add("d-none");
+        quiz.classList.remove("d-none");
+
+        for(var i = 0; i <= questionField.value - 1; i++){
+            data[i].id = i;
+            quizForm.appendChild(createQuestionNode(data[i]));
+        }
+    });
+
+    quizSubmit.addEventListener("click", function() {
+        var regEx = /Q(\d+)/g,
+            qId = regEx.exec(quizForm.elements[0].id)[1],
+            questionGroup = [],
+            correct = 0;
+
+        Array.from(quizForm.elements).forEach(function(input, idx) {
+            var regEx = /Q(\d+)/g,
+                match = regEx.exec(input.id)[1],
+                answer;
+
+            input.parentNode.classList.add("disabled");
+            input.disabled = true;
+
+            if (match === qId) {
+                questionGroup.push(input);
+
+                if (idx === quizForm.elements.length -1) {
+                    answer = questionGroup.filter(function(option) { 
+                        return option.value == data[qId].correct;
+                    })[0];
+
+                    if (answer.checked) {
+                        correct++;
+                        answer.parentNode.parentNode.previousElementSibling.style.color = "green";
+                    }
+                    else {
+                        answer.parentNode.parentNode.previousElementSibling.style.color = "red";
+                    }
+
+                    answer.nextElementSibling.style.color = "green";
+                    answer.nextElementSibling.style.fontWeight = "600";
+                    answer.parentNode.classList.remove("disabled");
+
+                    quizReset.classList.remove("d-none");
+                    results.classList.remove("d-none");
+                    quizSubmit.classList.add("d-none");
+                    results.innerHTML = correct + " correct out of " + questionField.value + "<br/>" + Math.round((correct / questionField.value) * 10000) / 100 + "%";
+                    window.scrollTo(0,0);
+                }
+            }
+            else {
+                answer = questionGroup.filter(function(option) { 
+                    return option.value == data[qId].correct;
+                })[0];
+
+                if (answer.checked) {
+                    correct++;
+                    answer.parentNode.parentNode.previousElementSibling.style.color = "green";
+                }
+                else {
+                    answer.parentNode.parentNode.previousElementSibling.style.color = "red";
+                }
+
+                answer.nextElementSibling.style.color = "green";
+                answer.nextElementSibling.style.fontWeight = "600";
+                answer.parentNode.classList.remove("disabled");
+
+                regEx = /Q(\d+)/g;
+                qId = regEx.exec(input.id)[1];
+                questionGroup = [input];
+            }
+        });
+    });
+
+    quizReset.addEventListener("click", function() {
+        while(quizForm.children.length !== 0) {
+            quizForm.firstElementChild.remove();
+        }
+
+        quizSetup.classList.remove("d-none");
+        quizSubmit.classList.remove("d-none");
+        quiz.classList.add("d-none");
+        results.classList.add("d-none");
+        quizReset.classList.add("d-none");
+    });
+
+    function createQuestionNode(question) {
+        var questionContainer = document.createElement("div"),
+            optionContainer = document.createElement("div"),
+            questionLabel = document.createElement("label");
+        
+        questionLabel.innerHTML = "<b>#" + (question.id + 1) + "</b>. " + question.question;
+
+        question.options.forEach(function(option, idx) {
+            var formCheck = document.createElement("div"),
+                radio = document.createElement("input"),
+                radioLabel = document.createElement("label");
+
+            formCheck.classList.add("form-check");
+
+            radio.classList.add("form-check-input");
+            radio.type = "radio";
+            radio.name = "Q" + question.id;
+            radio.id = "Q" + question.id + "-R" + idx;
+            radio.value = option;
+
+            radioLabel.classList.add("form-check-label")
+            radioLabel.htmlFor = radio.id;
+            radioLabel.innerText = option;
+            
+            formCheck.appendChild(radio);
+            formCheck.appendChild(radioLabel);
+
+            formCheck.classList.add("ml-1");
+
+            optionContainer.appendChild(formCheck);
+        });
+
+        optionContainer.classList.add("ml-5");
+        questionContainer.classList.add("mb-3");
+
+        questionContainer.appendChild(questionLabel);
+        questionContainer.appendChild(optionContainer);
+
+        return questionContainer;
+    }
+
+</script>
+</html>
