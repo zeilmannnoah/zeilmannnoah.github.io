@@ -159,7 +159,15 @@
                         answer.parentNode.parentNode.previousElementSibling.style.color = "#7fff7f";
                     }
                     else {
+                        var incorrectAnswer = questionGroup.filter(function(option) { 
+                            return option.checked;
+                        });
+
                         answer.parentNode.parentNode.previousElementSibling.style.color = "#ff3333";
+                        if (incorrectAnswer.length !== 0 ){
+                            incorrectAnswer[0].nextElementSibling.style.color = "#ff3333";
+                            incorrectAnswer[0].nextElementSibling.style.fontWeight = "600";
+                        }
                     }
 
                     answer.nextElementSibling.style.color = "#7fff7f";
